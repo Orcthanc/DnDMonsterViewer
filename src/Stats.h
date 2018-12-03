@@ -1,5 +1,3 @@
-#pragma once
-
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -31,7 +29,7 @@ DND_Stats* createStats( DND_Stats* stats ){
 	if( !stats )
 		stats = (DND_Stats*) malloc( sizeof( DND_Stats ));
 #define STAT( A, B ) 							\
-	stats->A.stat_type = DND_stat_names::A;		\
+	stats->A.stat_type = A;		\
 	stats->A.stat_name = #B;
 	#include "stats.inl"
 
