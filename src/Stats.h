@@ -1,3 +1,6 @@
+#ifndef __STATS_H__
+#define __STATS_H__
+
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -25,17 +28,7 @@ typedef struct {
  *		Fills the new/passed pointer with values
  *		returns the new/passed pointer
  */
-DND_Stats* createStats( DND_Stats* stats ){
-	if( !stats )
-		stats = (DND_Stats*) malloc( sizeof( DND_Stats ));
-#define STAT( A, B ) 							\
-	stats->A.stat_type = A;		\
-	stats->A.stat_name = #B;
-	#include "stats.inl"
+DND_Stats* createMonsterStats( DND_Stats* stats );
+void deleteMonsterStats( DND_Stats* stats );
 
-	return stats;
-}
-
-void deleteStats( DND_Stats* stats ){
-	free( stats );
-}
+#endif

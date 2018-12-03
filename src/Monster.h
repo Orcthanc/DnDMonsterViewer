@@ -4,15 +4,16 @@
 #include <stdint.h>
 #include "Stats.h"
 
-enum DnDAdditionalMonsterInfoType {
+typedef enum DnDAdditionalMonsterInfoType {
 	eDnDAdditionalMonsterInfoTypeNone,
-	eDnDAdditionalMonsterInfoTypeCaster,
+	eDnDAdditionalMonsterInfoTypeAttack,
 	eDnDAdditionalMonsterInfoTypeSpell,
-};
+	eDnDAdditionalMonsterInfoTypeCaster,
+} DnDAdditionalMonsterInfoType;
 
 typedef struct DnDAdditionalMonsterInfo {
 	DnDAdditionalMonsterInfoType sType;
-	DnDAdditionalMonsterInfo* pNext;
+	struct DnDAdditionalMonsterInfo* pNext;
 } DnDAdditionalMonsterInfo;
 
 typedef struct {
