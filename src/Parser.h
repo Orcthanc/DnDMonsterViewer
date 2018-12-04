@@ -4,10 +4,8 @@
 #include "Monster.h"
 
 typedef enum JSONObjectType {
-	eJSONObjectTypeNone = 0,
-	eJSONObjectTypeDictionaryEntry = 1,
-	eJSONObjectTypeArrayEntry = 1,
-	eJSONObjectTypeArray,
+	eJSONObjectTypeNone,
+	eJSONObjectTypeDictionaryEntry,
 	eJSONObjectTypeDictionary,
 	eJSONObjectTypeString,
 	
@@ -23,24 +21,17 @@ typedef struct JSONObjectDictionaryEntry {
 	JSONObject* value;
 } JSONObjectDictionaryEntry;
 
-typedef JSONObjectDictionaryEntry JSONObjectArrayEntry;
-
 typedef struct JSONObjectDictionary {
 	JSONObjectType sType;
 	JSONObjectDictionaryEntry** entries;
 	uint16_t size;
+	uint16_t max_size;
 } JSONObjectDictionary;
 
 typedef struct JSONObjectString {
 	JSONObjectType sType;
 	char* string;
 } JSONObjectString;
-
-typedef struct JSONObjectArray {
-	JSONObjectType sType;
-	JSONObject** array;
-	uint16_t size;
-} JSONObjectArray;
 
 void createDnDMonsterJSON( DnDMonster* monster, const char* path );
 

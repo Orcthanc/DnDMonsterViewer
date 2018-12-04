@@ -102,24 +102,105 @@ static uint16_t tokenize( FILE* file, char*** return_value ){
 	return index;
 }
 
-static JSONObjectArray* parse( char** content ){
+//Parses one Object, returns the point after the object
+static uint16_t parseDict( char** content, uint16_t curr_token, JSONObjectDictionary* object ){
+	if( strcmp( content[curr_token++], "{" )){	//token != {
+		return curr_token - 1;					//return call value
+	}
+	//loop over all objects TODO once function finished, swap break with comma there or not
+	while( strcmp( content[curr_token], "}" )){
+		//Check if object has free space
+		if( object->size == object->max_size ){
+			object->max_size *= 2;
+			object->entries = realloc( object->entries, sizeof( JSONObjectDictionaryEntry* ) * object->max_size );
+		}
+		object->entries[object->size++] = malloc( sizeof( JSONObjectDictionaryEntry ));
+		object->entries[object->size - 1]->sType = eJSONObjectTypeDictionaryEntry;
+		object->entries[object->size - 1]->key = strcopy( content[curr_token++] );
+
+		if( strcmp( content[curr_token++], ":" )){
+			fprintf( stderr, "WARNING: Error occured during parsing, found unexpected char %s\n", content[curr_token - 1] );
+		}
+
+		//Check if Object is a string or Dictionary
+		if( strcmp( content[curr_token], "{" )){ //String
+			JSONObjectString* string = malloc( sizeof( JSONObjectString ));
+			string->sType = eJSONObjectTypeString;
+			string->string = strcopy( content[curr_token++] );
+
+			object->entries[object->size - 1]->value = (JSONObject*)string;
+		}else {
+			JSONObjectDictionary* dict = malloc( sizeof( JSONObjectDictionary ));
+			dict->sType = eJSONObjectTypeDictionary;
+			dict->size = 0;
+			dict->max_size = 5;
+			dict->entries = malloc( sizeof( JSONObjectDictionary* ) * dict->max_size );
+
+			curr_token = parseDict( content, curr_token, dict );
+
+			object->entries[object->size - 1]->value = (JSONObject*)dict;
+		}
+		
+		if( !strcmp( content[curr_token], "," ))
+			curr_token++;
+		else if( strcmp( content[curr_token], "}" ))
+			fprintf( stderr, "Found unexpected char %s. Expected '[\\{,]'.\n", content[curr_token] );
+	}
+
+	return ++curr_token;
+}
+
+static JSONObjectDictionary* parse( const char* path ){
+	FILE* json = fopen( path, "r" );
+
+	char** tokens = NULL;
+
+	int len = tokenize( json, &tokens );
+
+
+	JSONObjectDictionary* dict = malloc( sizeof( JSONObjectDictionary ));
+	dict->sType = eJSONObjectTypeDictionary;
+	dict->size = 0;
+	dict->max_size = 1;
+	dict->entries = malloc( sizeof( JSONObjectDictionary* ) * dict->max_size );
 	
+	uint16_t last = parseDict( tokens, 0, dict );
+
+	if( last != len ){
+		fprintf( stderr, "WARNING: Syntax error in JSON\n" );
+	}
+
+	for( uint16_t i = 0; i < last; i++ )
+		free( tokens[i] );
+
+	fclose( json );
+
+	return dict;
+}
+
+static void jsonifyObject( JSONObject* object ){
+	switch( object->sType ){
+		case eJSONObjectTypeNone:
+			fprintf( stderr, "Found malformed JSONObject.\n" );
+			break;
+		case eJSONObjectTypeDictionary:
+			break;
+		case eJSONObjectTypeDictionaryEntry:
+			break;
+		case eJSONObjectTypeString:
+			break;
+	}
+}
+
+static void jsonify( char* path, JSONObjectDictionary* dict ){
+	jsonifyObject( (JSONObject*)dict );
 }
 
 void createDnDMonsterJSON( DnDMonster* monster, const char* path ){
-	FILE* json = fopen( path, "r" );
 	
 	if( !monster )
 		monster = (DnDMonster*)malloc( sizeof( DnDMonster ));
-	
-	char** tokens = NULL;
 
-	int token_length = tokenize( json, &tokens );
+	JSONObjectDictionary* json_struct = parse( path );
 
-	for( uint16_t i = 0; i < token_length; ++i )
-		fprintf( stderr, "%s\n\r", tokens[i] );
-
-	JSONObjectArray* json_struct = parse( tokens );
-
-	fclose( json );
 }
