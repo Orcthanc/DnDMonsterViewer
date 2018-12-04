@@ -4,8 +4,10 @@
 #include "Monster.h"
 
 typedef enum JSONObjectType {
-	eJSONObjectTypeNone,
-	eJSONObjectTypeDictionaryEntry,
+	eJSONObjectTypeNone = 0,
+	eJSONObjectTypeDictionaryEntry = 1,
+	eJSONObjectTypeArrayEntry = 1,
+	eJSONObjectTypeArray,
 	eJSONObjectTypeDictionary,
 	eJSONObjectTypeString,
 	
@@ -20,6 +22,8 @@ typedef struct JSONObjectDictionaryEntry {
 	char* key;
 	JSONObject* value;
 } JSONObjectDictionaryEntry;
+
+typedef JSONObjectDictionaryEntry JSONObjectArrayEntry;
 
 typedef struct JSONObjectDictionary {
 	JSONObjectType sType;

@@ -102,7 +102,7 @@ static uint16_t tokenize( FILE* file, char*** return_value ){
 	return index;
 }
 
-static JSONObjectDictionary* parse( const char** content ){
+static JSONObjectArray* parse( char** content ){
 	
 }
 
@@ -118,6 +118,8 @@ void createDnDMonsterJSON( DnDMonster* monster, const char* path ){
 
 	for( uint16_t i = 0; i < token_length; ++i )
 		fprintf( stderr, "%s\n\r", tokens[i] );
+
+	JSONObjectArray* json_struct = parse( tokens );
 
 	fclose( json );
 }
