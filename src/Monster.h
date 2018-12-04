@@ -37,6 +37,7 @@ typedef struct {
 
 typedef struct {
 	uint16_t hp;
+	uint16_t max_hp;
 	uint8_t move_speed;
 	char* ascii_art;
 	DND_Stats* stats;
