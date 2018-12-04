@@ -15,8 +15,6 @@ int main( int argc, char** argv ){
 	use_default_colors();
 	curs_set( 0 );
 
-	init_color( COLOR_DARK_GRAY, 100, 100, 100 );
-
 	init_pair( 1, COLOR_WHITE, COLOR_RED );
 	init_pair( 2, COLOR_WHITE, COLOR_DARK_GRAY );
 
