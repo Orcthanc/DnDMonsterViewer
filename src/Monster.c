@@ -4,8 +4,8 @@ DnDMonster* createDnDMonsterStats( DnDMonster* monster ){
 	if( !monster )
 		monster = (DnDMonster*) malloc( sizeof( DnDMonster ));
 	//TODO
-	monster->hp = 10;
-	monster->max_hp = 30;
+	monster->hp = 200;
+	monster->max_hp = 200;
 	monster->move_speed = 30;
 	monster->ascii_art = "";
 	monster->stats = createMonsterStats( NULL );

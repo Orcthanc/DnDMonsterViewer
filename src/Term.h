@@ -9,10 +9,14 @@
 #include <sys/ioctl.h>
 #endif
 
+extern uint8_t term_img_outdated;
+
 typedef struct {
 	uint8_t x;
 	uint8_t y;
 } TermSize;
+
+void handle_winch( int sig );
 
 void getTermSize(TermSize* t_size);
 
