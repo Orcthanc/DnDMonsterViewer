@@ -16,9 +16,17 @@ typedef struct DnDAdditionalMonsterInfo {
 	struct DnDAdditionalMonsterInfo* pNext;
 } DnDAdditionalMonsterInfo;
 
+typedef struct DnDAttackDamage {
+	struct DnDAttackDamage* next_roll;
+	DnDDieRoll damage;
+} DnDAttackDamage;
+
 typedef struct {
 	DnDAdditionalMonsterInfoType sType;
 	DnDAdditionalMonsterInfo* pNext;
+	const char* name;
+	const char* description;
+	DnDAttackDamage* damage;
 } DnDAdditionalMonsterInfoAttack;
 
 typedef struct {
@@ -36,6 +44,7 @@ typedef struct {
 } DnDAdditionalMonsterInfoCaster;
 
 typedef struct {
+	char* name;
 	int16_t hp;
 	uint16_t max_hp;
 	uint8_t move_speed;

@@ -62,7 +62,7 @@ void drawTerm( DnDMonster const *monster ){
 	
 	//Print red part
 	attron( COLOR_PAIR( PAIR_WHITE_RED ));
-	mvprintw( LINES - 1, 0, "%*s%.*s", completely_red_chars, "", MAX( 0, red_chars - completely_red_chars ), text );
+	mvprintw( t_size.y - 2, 0, "%*s%.*s", completely_red_chars, "", MAX( 0, red_chars - completely_red_chars ), text );
 	if( red_chars > completely_red_chars + text_size )
 		printw( "%*s", red_chars - (completely_red_chars + text_size ), "" );
 	attroff( COLOR_PAIR( PAIR_WHITE_RED ));

@@ -19,6 +19,12 @@ typedef struct DND_Stat {
 } DND_Stat;
 
 typedef struct {
+	uint8_t num_die;
+	uint8_t die_sides;
+	int8_t flat_bonus;
+} DnDDieRoll;
+
+typedef struct {
 #define STAT( A, B )							\
 	DND_Stat A;
 	#include "stats.inl"

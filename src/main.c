@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "Term.h"
 #include "Colors.h"
+#include "Parser.h"
 
 #include <stdio.h>
 #include <ncurses.h>
@@ -11,6 +12,8 @@ int main( int argc, char** argv ){
 
 	initscr();
 	start_color();
+	use_default_colors();
+	curs_set( 0 );
 
 	init_color( COLOR_DARK_GRAY, 100, 100, 100 );
 
@@ -23,8 +26,14 @@ int main( int argc, char** argv ){
 
 	int temp;
 
+	DnDMonster monster2;
+
+	printf( "%i\n", argc );
+
+	if( argc > 1 )
+		createDnDMonsterJSON( &monster2, argv[1] );
+
 	while( (temp = getch()) != 27 ){
-		//if( term_img_outdated )
 		if( temp >= '0' && temp <= '9' )
 			monster->hp -= temp - '0';
 		drawTerm( monster );
