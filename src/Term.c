@@ -29,6 +29,6 @@ void drawTerm( DnDMonster const *monster ){
 	printf( "\033[%i;0H", t_size.y - 1 );
 	uint8_t text_size = snprintf( NULL, 0, " %i/%i", monster->hp, monster->max_hp );
 	
-	uint8_t red_chars = monster->max_hp * t_size.x / monster->hp;
+	uint8_t red_chars = monster->hp * t_size.x / monster->max_hp;
 	printf( "%i %i ", red_chars, t_size.x );
 }
