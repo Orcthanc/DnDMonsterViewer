@@ -1,4 +1,5 @@
 #include "Monster.h"
+#include "Parser.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -101,7 +102,9 @@ static uint16_t tokenize( FILE* file, char*** return_value ){
 	return index;
 }
 
-
+static JSONObjectDictionary* parse( const char** content ){
+	
+}
 
 void createDnDMonsterJSON( DnDMonster* monster, const char* path ){
 	FILE* json = fopen( path, "r" );
