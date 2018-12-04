@@ -26,12 +26,13 @@ int main( int argc, char** argv ){
 
 	int temp;
 
-	DnDMonster monster2;
-
 	printf( "%i\n", argc );
 
+	JSONObjectDictionary* dict;
 	if( argc > 1 )
-		createDnDMonsterJSON( &monster2, argv[1] );
+		dict = parse( argv[1] );
+	if( argc > 2 )
+		jsonify( argv[2], dict );
 
 	while( (temp = getch()) != 27 ){
 		if( temp >= '0' && temp <= '9' )

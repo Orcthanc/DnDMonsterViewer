@@ -1,0 +1,34 @@
+
+{
+	"monster": 
+	{
+		"name": "many_hp_test",
+		"maxhp": "100d4+121",
+		"move_speed": "30",
+		"ascii_art": ">-(",
+		"stats": 
+		{
+			"STR": "26",
+			"DEX": "27",
+			"CON": "22",
+			"INT": "8",
+			"WIS": "27",
+			"CHA": "12"
+		},
+		"attack": 
+		{
+			"0": 
+			{
+				"name": "blarg",
+				"description": "Y U NO BLARGH",
+				"damage": "1d8+3d4+5"
+			},
+			"1": 
+			{
+				"name": "Longsword",
+				"description": "Attacks with a longsword",
+				"damage": "5d8+3"
+			}
+		}
+	}
+}

@@ -33,6 +33,7 @@ typedef struct JSONObjectString {
 	char* string;
 } JSONObjectString;
 
-void createDnDMonsterJSON( DnDMonster* monster, const char* path );
+JSONObjectDictionary* parse( const char* path );
+void jsonify( char* path, JSONObjectDictionary* dict );
 
 #endif

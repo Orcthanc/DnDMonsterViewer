@@ -5,6 +5,8 @@
 #include <string.h>
 #include <ncurses.h>
 
+static char* many_tabs = "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+
 static void readFile( char* buffer, FILE* file ){
 	char* cur_char = buffer;
 	while( (*cur_char++ = fgetc( file )) != EOF );
@@ -150,7 +152,7 @@ static uint16_t parseDict( char** content, uint16_t curr_token, JSONObjectDictio
 	return ++curr_token;
 }
 
-static JSONObjectDictionary* parse( const char* path ){
+JSONObjectDictionary* parse( const char* path ){
 	FILE* json = fopen( path, "r" );
 
 	char** tokens = NULL;
@@ -178,29 +180,39 @@ static JSONObjectDictionary* parse( const char* path ){
 	return dict;
 }
 
-static void jsonifyObject( JSONObject* object ){
+static void jsonifyObject( FILE* file, JSONObject* object, int ident ){
 	switch( object->sType ){
 		case eJSONObjectTypeNone:
 			fprintf( stderr, "Found malformed JSONObject.\n" );
 			break;
 		case eJSONObjectTypeDictionary:
+			{
+				fprintf( file, "\n%.*s{", ident, many_tabs );
+				for( int i = 0; i < ((JSONObjectDictionary*)object)->size; i++ ){
+					JSONObjectDictionaryEntry* e = ((JSONObjectDictionary*)object)->entries[i];
+					fprintf( file, "\n%.*s\"%s\": ", ident + 1, many_tabs, e->key );
+					jsonifyObject( file, e->value, ident + 1 );
+					if( i != ((JSONObjectDictionary*)object)->size - 1 )
+						fprintf( file, "," );
+				}
+				fprintf( file, "\n%.*s}", ident, many_tabs );
+			}
 			break;
 		case eJSONObjectTypeDictionaryEntry:
+			fprintf( stderr, "Should never happen\n" );
 			break;
 		case eJSONObjectTypeString:
+			fprintf( file, "\"%s\"", ((JSONObjectString*)object)->string );
 			break;
 	}
 }
 
-static void jsonify( char* path, JSONObjectDictionary* dict ){
-	jsonifyObject( (JSONObject*)dict );
+void jsonify( char* path, JSONObjectDictionary* dict ){
+	FILE* json = fopen( path, "w" );
+
+	jsonifyObject( json, (JSONObject*)dict, 0 );
+	fflush( json );
+
+	fclose( json );
 }
 
-void createDnDMonsterJSON( DnDMonster* monster, const char* path ){
-	
-	if( !monster )
-		monster = (DnDMonster*)malloc( sizeof( DnDMonster ));
-
-	JSONObjectDictionary* json_struct = parse( path );
-
-}
