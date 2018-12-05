@@ -11,6 +11,8 @@ int main( int argc, char** argv ){
 	DnDMonster* monster = createDnDMonsterStats( NULL );
 
 	initscr();
+	cbreak();
+	noecho();
 	start_color();
 	use_default_colors();
 	curs_set( 0 );
@@ -23,8 +25,6 @@ int main( int argc, char** argv ){
 	drawTerm( monster );
 
 	int temp;
-
-	printf( "%i\n", argc );
 
 	JSONObjectDictionary* dict;
 	if( argc > 1 )
