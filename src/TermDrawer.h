@@ -20,6 +20,7 @@ void handle_winch( int sig );
 
 void getTermSize(TermSize* t_size);
 
-void drawTerm( DnDMonster const *monster, const char* curr_comand );
+void drawMonster( DnDMonster const *monster );
+void drawCommand( const char* command );
 
 #endif

@@ -1,5 +1,5 @@
 #include "Monster.h"
-#include "Term.h"
+#include "TermDrawer.h"
 #include "Colors.h"
 #include "Parser.h"
 
@@ -22,7 +22,7 @@ int main( int argc, char** argv ){
 
 	signal( SIGWINCH, handle_winch );
 
-	drawTerm( monster, "" );
+	drawMonster( monster );
 
 	char buffer[256];
 	int temp;
@@ -63,7 +63,8 @@ int main( int argc, char** argv ){
 		else
 			snprintf( buffer, 256, "Heal: %i", hp_change );
 
-		drawTerm( monster, buffer );
+		drawMonster( monster );
+		drawCommand( buffer );
 	}
 
 	endwin();

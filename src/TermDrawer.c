@@ -1,4 +1,4 @@
-#include "Term.h"
+#include "TermDrawer.h"
 #include "Colors.h"
 
 #include <stdio.h>
@@ -70,7 +70,7 @@ static uint8_t set_color( uint16_t pos, uint8_t curr_color, uint16_t hp, uint16_
 	return color;
 }
 
-void drawTerm( DnDMonster const *monster, const char* curr_comand ){
+void drawMonster( DnDMonster const *monster ){
 
 //HP {
 	uint8_t text_size = snprintf( NULL, 0, " %i/%i", monster->hp, monster->max_hp );
@@ -86,8 +86,8 @@ void drawTerm( DnDMonster const *monster, const char* curr_comand ){
 	}
 	attroff( COLOR_PAIR( curr_color ));
 //} HP
+}
 
-//CurrComand {
-	mvprintw( LINES - 1, 0, ">%s", curr_comand );
-//} CurrComand
+void drawCommand( const char* command ){
+	mvprintw( LINES - 1, 0, ">%s", command );
 }
