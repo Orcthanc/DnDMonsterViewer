@@ -57,11 +57,12 @@ int main( int argc, char** argv ){
 			clrtoeol();
 		}
 
-
-		if( hp_change_mult == -1 )
-			snprintf( buffer, 256, "Damage: %i", hp_change );
-		else
-			snprintf( buffer, 256, "Heal: %i", hp_change );
+		if( hp_change != 0 ){
+			if( hp_change_mult == -1 )
+				snprintf( buffer, 256, "Damage: %i", hp_change );
+			else
+				snprintf( buffer, 256, "Heal: %i", hp_change );
+		}
 
 		drawMonster( monster );
 		drawCommand( buffer );
