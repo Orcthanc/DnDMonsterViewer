@@ -22,8 +22,9 @@ int main( int argc, char** argv ){
 
 	signal( SIGWINCH, handle_winch );
 
-	drawTerm( monster );
+	drawTerm( monster, "" );
 
+	char buffer[256];
 	int temp;
 
 	JSONObjectDictionary* dict;
@@ -32,10 +33,37 @@ int main( int argc, char** argv ){
 	if( argc > 2 )
 		jsonify( argv[2], dict );
 
+	int hp_change = 0;
+	int hp_change_mult = -1;
+
 	while( (temp = getch()) != 27 ){
 		if( temp >= '0' && temp <= '9' )
-			monster->hp -= temp - '0';
-		drawTerm( monster );
+			hp_change = hp_change * 10 + temp - '0';
+		else if( temp == '\n' ){
+			monster->hp += hp_change * hp_change_mult;
+			hp_change = 0;
+			move( LINES - 1, 0 );
+			clrtoeol();
+
+		}
+		else if( temp == '-' ){
+			hp_change_mult *= -1;
+			move( LINES - 1, 0 );
+			clrtoeol();
+		}
+		else if( temp == '\b' ){
+			hp_change /= 10;
+			move( LINES - 1, 0 );
+			clrtoeol();
+		}
+
+
+		if( hp_change_mult == -1 )
+			snprintf( buffer, 256, "Damage: %i", hp_change );
+		else
+			snprintf( buffer, 256, "Heal: %i", hp_change );
+
+		drawTerm( monster, buffer );
 	}
 
 	endwin();
