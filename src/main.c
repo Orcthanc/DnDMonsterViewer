@@ -8,7 +8,7 @@
 #include <signal.h>
 
 int main( int argc, char** argv ){
-	DnDMonster* monster = createDnDMonsterStats( NULL );
+	DnDMonster* monster = createDnDMonsterStats( NULL, argc > 1 ? argv[1] : "200" );
 
 	initscr();
 	cbreak();
@@ -28,10 +28,10 @@ int main( int argc, char** argv ){
 	int temp;
 
 	JSONObjectDictionary* dict;
-	if( argc > 1 )
-		dict = parse( argv[1] );
 	if( argc > 2 )
-		jsonify( argv[2], dict );
+		dict = parse( argv[2] );
+	if( argc > 3 )
+		jsonify( argv[3], dict );
 
 	int hp_change = 0;
 	int hp_change_mult = -1;

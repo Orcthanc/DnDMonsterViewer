@@ -53,7 +53,7 @@ typedef struct {
 	DnDAdditionalMonsterInfo * pNext;
 } DnDMonster;
 
-DnDMonster* createDnDMonsterStats( DnDMonster* monster );
+DnDMonster* createDnDMonsterStats( DnDMonster* monster, const char* hp );
 void deleteDnDMonsterStats( DnDMonster* monster );
 
 #endif

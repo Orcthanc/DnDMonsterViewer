@@ -90,4 +90,5 @@ void drawMonster( DnDMonster const *monster ){
 
 void drawCommand( const char* command ){
 	mvprintw( LINES - 1, 0, ">%s", command );
+	clrtoeol();
 }

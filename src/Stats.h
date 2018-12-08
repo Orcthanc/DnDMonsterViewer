@@ -1,6 +1,8 @@
 #ifndef __STATS_H__
 #define __STATS_H__
 
+#include "DnDConcepts.h"
+
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -17,12 +19,6 @@ typedef struct DND_Stat {
 	int8_t ability_score_mod;
 
 } DND_Stat;
-
-typedef struct {
-	uint8_t num_die;
-	uint8_t die_sides;
-	int8_t flat_bonus;
-} DnDDieRoll;
 
 typedef struct {
 #define STAT( A, B )							\
