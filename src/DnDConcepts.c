@@ -11,10 +11,12 @@ static int16_t roll_die_kind( int8_t number, uint8_t sides ){
 	for( int8_t i = 0; i != number; i += (number > 0) - (number < 0)){
 		return_v += ( rand() % sides ) + 1;
 	}
+	fprintf( stderr, "\t%id%i: %i\n", number, sides, return_v );
 	return return_v;
 }
 
 int16_t roll_dice( DnDDieRoll* amount ){
+	fprintf( stderr, "Rolling dice:\n" );
 	if( !rand_inited ){
 		srand( time( NULL ));
 		rand_inited = 1;
@@ -24,6 +26,8 @@ int16_t roll_dice( DnDDieRoll* amount ){
 	for( uint8_t i = 0; i < amount->different_die; ++i ){
 		result += roll_die_kind( amount->num_die[i], amount->die_sides[i] );
 	}
+
+	fprintf( stderr, "\tBonus: %i\n\tResult: %i\n", amount->flat_bonus, result + amount->flat_bonus );
 
 	return result + amount->flat_bonus;
 }
@@ -63,8 +67,6 @@ int16_t roll_dice_string( const char* string ){
 			num *= 10;
 			num += string[i] - '0';
 
-			fprintf( stderr, "a: %c, %i %i\n", string[i], string[i] - '0', num );
-
 			i++;
 		}
 		
@@ -79,7 +81,6 @@ int16_t roll_dice_string( const char* string ){
 			roll.num_die[index] = num * sign;
 			roll.die_sides[index++] = num2;
 		}else {
-			fprintf( stderr, "TEST %i %i\n", num, sign );
 			roll.flat_bonus += num * sign;
 		}
 	}
