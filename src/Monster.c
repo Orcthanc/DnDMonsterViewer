@@ -4,10 +4,9 @@
 #include <stdio.h>
 
 DnDMonster* rollDnDMonsterHP( DnDMonster* monster, const char* hp ){
-	fprintf( stderr, "%s  %i\n", hp, roll_dice_string( hp ));
 	monster->hp = roll_dice_string( hp );
 	monster->max_hp = monster->hp;
-	
+
 	return monster;
 }
 

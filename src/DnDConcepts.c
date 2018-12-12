@@ -32,20 +32,34 @@ int16_t roll_dice( DnDDieRoll* amount ){
 	return result + amount->flat_bonus;
 }
 
-DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll* roll ){
+DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll** roll ){
 	//Count die
 	uint8_t dice_count = 0;
 	for( uint8_t i = 0; string[i]; ++i )
 		if( string[i] == 'd' )
 			dice_count++;
 
-	int8_t num_die[dice_count];
-	uint8_t die_sides[dice_count];
+	if( !*roll ){
+		(*roll) = calloc( 1, sizeof( DnDDieRoll ) );
+	}
 
-	roll->different_die = dice_count;
-	roll->num_die = num_die;
-	roll->die_sides = die_sides;
-	roll->flat_bonus = 0;
+	if( (*roll)->num_die ){
+		(*roll)->num_die = realloc( (*roll)->num_die, dice_count );
+	}
+	else{
+		(*roll)->num_die = malloc( dice_count );
+	}
+
+	if( (*roll)->die_sides ){
+		(*roll)->die_sides = realloc( (*roll)->die_sides, dice_count );
+	}
+	else{
+		(*roll)->die_sides = malloc( dice_count );
+	}
+
+
+	(*roll)->different_die = dice_count;
+	(*roll)->flat_bonus = 0;
 
 	uint8_t index = 0;
 
@@ -68,7 +82,7 @@ DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll* roll ){
 
 			i++;
 		}
-		
+
 		if( string[i] == 'd' ){
 			i++;
 
@@ -77,19 +91,28 @@ DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll* roll ){
 				num2 += string[i++] - '0';
 			}
 
-			roll->num_die[index] = num * sign;
-			roll->die_sides[index++] = num2;
+			(*roll)->num_die[index] = num * sign;
+			(*roll)->die_sides[index++] = num2;
 		}else {
-			roll->flat_bonus += num * sign;
+			(*roll)->flat_bonus += num * sign;
 		}
 	}
 
-	return roll;
+	return (*roll);
 }
 
 int16_t roll_dice_string( const char* string ){
 	DnDDieRoll roll;
-	get_roll_dice_string( string, &roll );
-	fprintf( stderr, "%i %i %i\n", roll.different_die, roll.num_die[0], roll.die_sides[0] );
-	return roll_dice( &roll );
+	DnDDieRoll* pRoll = &roll;
+	get_roll_dice_string( string, &pRoll );
+	int16_t roll2 = roll_dice( &roll );
+
+	destroyDiceRollContents( &roll );
+
+	return roll2;
+}
+
+void destroyDiceRollContents( DnDDieRoll* roll ){
+	free( roll->die_sides );
+	free( roll->num_die );
 }

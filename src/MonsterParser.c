@@ -45,16 +45,18 @@ static void parse_stats( const JSONObject* stats, DnDMonster* monster ){
 	}
 }
 
-static DnDAttackDamage* parse_damage( const char* dmg_string ){
-	DnDAttackDamage* damage = malloc( sizeof( DnDAttackDamage ));
-	damage = (DnDAttackDamage*)get_roll_dice_string( dmg_string, damage );
-	return damage;
+static DnDAttackDamage* parse_damage( const char* dmg_string, DnDAttackDamage** damage ){
+	if( !*damage )
+		*damage = calloc( 1, sizeof( DnDAttackDamage ) );
+	get_roll_dice_string( dmg_string, damage );
+
+	return *damage;
 }
 
 static void parse_attack( const JSONObject* attack, DnDMonster* monster ){
 	JSONObjectDictionary* dict = (JSONObjectDictionary*)attack;
 
-	DnDAdditionalMonsterInfoAttack* attack_struct = malloc( sizeof( DnDAdditionalMonsterInfoAttack ));
+	DnDAdditionalMonsterInfoAttack* attack_struct = calloc( 1, sizeof( DnDAdditionalMonsterInfoAttack ));
 
 	for( size_t i = 0; i < dict->size; i++ ){
 		if( !strcmp( "name", dict_key( dict, i ))){
@@ -64,7 +66,7 @@ static void parse_attack( const JSONObject* attack, DnDMonster* monster ){
 			attack_struct->description = ((JSONObjectString*)dict_value( dict, i ))->string;
 		}
 		else if( !strcmp( "damage", dict_key( dict, i ))){
-			attack_struct->damage = parse_damage( ((JSONObjectString*)dict_value( dict, i ))->string );
+			attack_struct->damage = parse_damage( ((JSONObjectString*)dict_value( dict, i ))->string, &attack_struct->damage );
 		}
 		else{
 			fprintf( stderr,  "WARNING: Found invalid JSON-Entry %s\n", dict_key( dict, i ));

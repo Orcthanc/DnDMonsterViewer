@@ -14,6 +14,8 @@ int16_t roll_dice( DnDDieRoll* amount );
 
 int16_t roll_dice_string( const char* string );
 
-DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll* roll );
+DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll** roll );
+
+void destroyDiceRollContents( DnDDieRoll* roll );
 
 #endif
