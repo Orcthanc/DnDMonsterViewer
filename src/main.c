@@ -1,14 +1,19 @@
 #include "Monster.h"
 #include "TermDrawer.h"
 #include "Colors.h"
-#include "Parser.h"
+#include "MonsterParser.h"
 
 #include <stdio.h>
 #include <ncurses.h>
 #include <signal.h>
 
 int main( int argc, char** argv ){
-	DnDMonster* monster = createDnDMonsterStats( NULL, argc > 1 ? argv[1] : "200" );
+	DnDMonster* monster = malloc( sizeof( DnDMonster ));
+
+	if( argc > 1 )
+		parseMonster( argv[1], monster );
+
+	fprintf( stderr, "%s\n", monster->name );
 
 	initscr();
 	cbreak();
@@ -26,12 +31,6 @@ int main( int argc, char** argv ){
 
 	char buffer[256];
 	int temp;
-
-	JSONObjectDictionary* dict;
-	if( argc > 2 )
-		dict = parse( argv[2] );
-	if( argc > 3 )
-		jsonify( argv[3], dict );
 
 	int hp_change = 0;
 	int hp_change_mult = -1;

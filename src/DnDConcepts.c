@@ -32,7 +32,7 @@ int16_t roll_dice( DnDDieRoll* amount ){
 	return result + amount->flat_bonus;
 }
 
-int16_t roll_dice_string( const char* string ){
+DnDDieRoll* get_roll_dice_string( const char* string, DnDDieRoll* roll ){
 	//Count die
 	uint8_t dice_count = 0;
 	for( uint8_t i = 0; string[i]; ++i )
@@ -42,11 +42,10 @@ int16_t roll_dice_string( const char* string ){
 	int8_t num_die[dice_count];
 	uint8_t die_sides[dice_count];
 
-	DnDDieRoll roll;
-	roll.different_die = dice_count;
-	roll.num_die = num_die;
-	roll.die_sides = die_sides;
-	roll.flat_bonus = 0;
+	roll->different_die = dice_count;
+	roll->num_die = num_die;
+	roll->die_sides = die_sides;
+	roll->flat_bonus = 0;
 
 	uint8_t index = 0;
 
@@ -78,12 +77,19 @@ int16_t roll_dice_string( const char* string ){
 				num2 += string[i++] - '0';
 			}
 
-			roll.num_die[index] = num * sign;
-			roll.die_sides[index++] = num2;
+			roll->num_die[index] = num * sign;
+			roll->die_sides[index++] = num2;
 		}else {
-			roll.flat_bonus += num * sign;
+			roll->flat_bonus += num * sign;
 		}
 	}
 
+	return roll;
+}
+
+int16_t roll_dice_string( const char* string ){
+	DnDDieRoll roll;
+	get_roll_dice_string( string, &roll );
+	fprintf( stderr, "%i %i %i\n", roll.different_die, roll.num_die[0], roll.die_sides[0] );
 	return roll_dice( &roll );
 }

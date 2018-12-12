@@ -16,10 +16,7 @@ typedef struct DnDAdditionalMonsterInfo {
 	struct DnDAdditionalMonsterInfo* pNext;
 } DnDAdditionalMonsterInfo;
 
-typedef struct DnDAttackDamage {
-	struct DnDAttackDamage* next_roll;
-	DnDDieRoll damage;
-} DnDAttackDamage;
+typedef DnDDieRoll DnDAttackDamage;
 
 typedef struct {
 	DnDAdditionalMonsterInfoType sType;
@@ -53,7 +50,8 @@ typedef struct {
 	DnDAdditionalMonsterInfo * pNext;
 } DnDMonster;
 
-DnDMonster* createDnDMonsterStats( DnDMonster* monster, const char* hp );
+DnDMonster* rollDnDMonsterHP( DnDMonster* monster, const char* hp );
+DnDAdditionalMonsterInfo** DnDAdditionalMonsterInfoGetLastPointerToNext( DnDMonster* monster );
 void deleteDnDMonsterStats( DnDMonster* monster );
 
 #endif

@@ -3,7 +3,7 @@
 	"monster": 
 	{
 		"name": "many_hp_test",
-		"maxhp": "100d4+121",
+		"maxhp": "100d4+121+1d8",
 		"move_speed": "30",
 		"ascii_art": ">-(",
 		"stats": 
